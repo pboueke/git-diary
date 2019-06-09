@@ -71,8 +71,8 @@
             return string
         }
         
-        const names = (await fetch("posts/index.json")).json() 
-        processPosts(await names)
+        const names = await fetch("posts/index.json")
+        processPosts(await names.json())
         
         
 
