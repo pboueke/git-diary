@@ -29,8 +29,52 @@
 
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js" type="text/javascript"></script>
     <script>
-        fetch("posts/index.json")
-            .then(response => response.text())
-            .then(text => console.log(text))
+        const converter = new showdown.Converter()
+
+        const processPosts = async names => {
+
+            const htmls = names.filter(n => n !== "index")
+                                .sort((a,b) => a > b ? -1 : 1)
+                                .map(async n => await fetchPost(n))
+                                .map(async r => await builPostObject(r))
+                                .map(async o => await buildPostHTML(o))
+            Promise.all(htmls)
+                   .then(htmls => htmls.reduce((a,b) => a + b))
+                   .then(html => document.getElementById("container").innerHTML = html)
+
+        }
+
+        const fetchPost = async name => {
+            const text = await (await fetch("posts/" + name + ".md")).text()
+            return { text, name }
+        }
+
+        const builPostObject = async file => {
+            const f = await file
+            const title = f.text.split('\n')[0]
+            return {
+                title,
+                body: f.text.replace(title,""),
+                date: new Date(f.name.substring(0,10).replace(/-/g, "/")).toDateString()
+            }
+        }
+
+        const buildPostHTML = async postObject => {
+            const obj = await postObject
+            let string = "<div>"
+            string +=       "<br>"
+            string +=       "<h2>" + obj.title + "</h2>"
+            string +=       "<p>" + obj.date + "</p>"        
+            string +=       "<hr>"
+            string +=       converter.makeHTML(postObject.body)
+            string +=    "</div>"
+            return string
+        }
+        
+        const names = await (await fetch("posts/index.json")).json() 
+        processPosts(names)
+        
+        
+
     </script>
 </html>
