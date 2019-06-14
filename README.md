@@ -6,6 +6,6 @@ The git-diary project aims to provide an absolutely basic diary/blogging experie
 
 Blog posts are written in markdown and saved as plain text in files named as `yyyy-MM-dd-Post-Title.md`. 
 
-This is a very simple project aiming to provide basic file management over a git repository. The API provides an easy way to integrate this solution in file editors, chat bots and whatever else. 
+This is a very simple project aiming to provide basic file management over a git repository. The API provides an easy way to integrate this solution in file editors, [chat bots](https://github.com/pboueke/git-diary-telegram) and whatever else. 
 
 If you are looking to set up a diary, simply create a new repository with a folder named `posts` and set up the api following the steps described [there](https://github.com/pboueke/git-diary-api). If you want the static rendering to be public, enabled github pages in your repository and copy the `index.html` file to it, editing whatever you fell like editing. 
